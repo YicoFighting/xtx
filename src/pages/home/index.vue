@@ -3,7 +3,15 @@
     <!-- 自定义导航栏 -->
     <nav-bar></nav-bar>
     <!-- 滚动容器 -->
-    <scroll-view scroll-y @scrolltolower="onScrolltolower">
+    <scroll-view
+      enable-back-to-top
+      refresher-enabled
+      @refresherrefresh="onRefresherrefresh"
+      :refresher-triggered="isTriggered"
+      @scrolltolower="onScrolltolower"
+      class="scroll-view"
+      scroll-y
+    >
       <!-- 自定义轮播图 -->
       <xtx-swiper :list="bannerList"></xtx-swiper>
       <!-- 分类面板 -->
@@ -55,6 +63,23 @@ const guessRef = ref<XtxGuessInstance>()
 // 滚动触底事件
 const onScrolltolower = () => {
   guessRef.value?.getMore()
+}
+
+// 下拉刷新状态
+const isTriggered = ref(false)
+// 自定义下拉刷新被触发
+const onRefresherrefresh = async () => {
+  // 开启动画
+  isTriggered.value = true
+  // 重置猜你喜欢组件数据
+  guessRef.value?.resetData() // 加载数据
+  await Promise.all([
+    getHomeBannerData(),
+    getHomeCategoryData(),
+    getHomeHotData(),
+    guessRef.value?.getMore(),
+  ]) // 关闭动画
+  isTriggered.value = false
 }
 
 // 页面加载
