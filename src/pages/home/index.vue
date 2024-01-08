@@ -12,14 +12,17 @@
       class="scroll-view"
       scroll-y
     >
-      <!-- 自定义轮播图 -->
-      <xtx-swiper :list="bannerList"></xtx-swiper>
-      <!-- 分类面板 -->
-      <CategoryPanel :list="categoryList" />
-      <!-- 热门推荐 -->
-      <HotPanel :list="hotList" />
-      <!-- 猜你喜欢 -->
-      <xtx-guess ref="guessRef"></xtx-guess>
+      <page-skeleton v-if="isLoading"></page-skeleton>
+      <template v-else>
+        <!-- 自定义轮播图 -->
+        <xtx-swiper :list="bannerList"></xtx-swiper>
+        <!-- 分类面板 -->
+        <CategoryPanel :list="categoryList" />
+        <!-- 热门推荐 -->
+        <HotPanel :list="hotList" />
+        <!-- 猜你喜欢 -->
+        <xtx-guess ref="guessRef"></xtx-guess>
+      </template>
     </scroll-view>
   </view>
 </template>
@@ -31,6 +34,7 @@ import { onLoad } from '@dcloudio/uni-app'
 import NavBar from '@/components/nav-bar/index.vue'
 import CategoryPanel from './components/category-panel/index.vue'
 import HotPanel from './components/hot-panel/index.vue'
+import PageSkeleton from './components/page-skeleton/index.vue'
 
 import type { BannerItem, CategoryItem, HotItem } from '@/types/home'
 import { getHomeBannerAPI, getHomeCategoryAPI, getHomeHotAPI } from '@/services/home'
@@ -82,9 +86,14 @@ const onRefresherrefresh = async () => {
   isTriggered.value = false
 }
 
+// 是否加载中标记
+const isLoading = ref(false)
+
 // 页面加载
 onLoad(async () => {
+  isLoading.value = true
   await Promise.all([getHomeBannerData(), getHomeCategoryData(), getHomeHotData()])
+  isLoading.value = false
 })
 </script>
 
