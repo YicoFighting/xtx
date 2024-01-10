@@ -115,6 +115,18 @@
             "navigationBarTextStyle": "white",
             "navigationBarTitleText": "个人信息"
           }
+        },
+        {
+          "path": "address/index",
+          "style": {
+            "navigationBarTitleText": "地址管理"
+          }
+        },
+        {
+          "path": "address-form/index",
+          "style": {
+            "navigationBarTitleText": ""
+          }
         }
       ]
     }
