@@ -7,8 +7,13 @@ import type { GoodsResult } from '@/types/goods'
 import AddressPanel from './components/address-panel/index.vue'
 import ServicePanel from './components/service-panel/index.vue'
 import PageSkeleton from './components/page-skeleton/index.vue'
-import type { SkuPopupLocaldata, SkuPopupInstance } from '@/types/vk-data-goods-sku-popup'
+import type {
+  SkuPopupLocaldata,
+  SkuPopupInstance,
+  SkuPopupEvent,
+} from '@/types/vk-data-goods-sku-popup'
 import { computed } from 'vue'
+import { postMemberCartAPI } from '@/services/cart'
 
 // 获取屏幕边界到安全区域距离
 const { safeAreaInsets } = uni.getSystemInfoSync()
@@ -101,6 +106,13 @@ const selectArrText = computed(() => {
   return skuPopupRef.value?.selectArr?.join(' ').trim() || '请选择商品规格'
 })
 
+// 加入购物车事件
+const onAddCart = async (ev: SkuPopupEvent) => {
+  await postMemberCartAPI({ skuId: ev._id, count: ev.buy_num })
+  uni.showToast({ title: '添加成功' })
+  isShowSku.value = false
+}
+
 // 页面加载
 onLoad(() => {
   getGoodsByIdData()
@@ -121,6 +133,7 @@ onLoad(() => {
       borderColor: '#27BA9B',
       backgroundColor: '#E9F8F5',
     }"
+    @add-cart="onAddCart"
   />
 
   <page-skeleton v-if="loading"> </page-skeleton>
@@ -224,7 +237,9 @@ onLoad(() => {
         <button class="icons-button" open-type="contact">
           <text class="icon-handset"></text>客服
         </button>
-        <navigator class="icons-button"><text class="icon-cart"></text>购物车</navigator>
+        <navigator class="icons-button" url="/pages/cart/cart">
+          <text class="icon-cart"></text>购物车
+        </navigator>
       </view>
       <view class="buttons">
         <!-- 显示一个按钮 -->
