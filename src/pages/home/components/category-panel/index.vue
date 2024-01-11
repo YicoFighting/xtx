@@ -12,7 +12,7 @@ defineProps<{
     <navigator
       class="category-item"
       hover-class="none"
-      url="/pages/index/index"
+      url="/pages/home/index"
       v-for="item in list"
       :key="item.id"
     >

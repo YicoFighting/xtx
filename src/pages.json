@@ -32,6 +32,12 @@
       }
     },
     {
+      "path": "pages/cart/cart",
+      "style": {
+        "navigationBarTitleText": "购物车"
+      }
+    },
+    {
       "path": "pages/my/index",
       "style": {
         "navigationBarTitleText": "我的"
@@ -126,6 +132,17 @@
           "path": "address-form/index",
           "style": {
             "navigationBarTitleText": ""
+          }
+        }
+      ]
+    },
+    {
+      "root": "pagesOrder",
+      "pages": [
+        {
+          "path": "create/index",
+          "style": {
+            "navigationBarTitleText": "create"
           }
         }
       ]
